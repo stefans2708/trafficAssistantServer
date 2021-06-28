@@ -1,6 +1,6 @@
 import base64
 
-from flask import Flask
+from flask import Flask, request
 from flask_socketio import SocketIO
 
 import constants
@@ -17,7 +17,7 @@ def index():
 
 @socketio.on(constants.EVENT_MESSAGE)
 def handle_message(message):
-    print(message)
+    print(f'{request.sid}: {message}')
     return f'OK, {message}'
 
 
