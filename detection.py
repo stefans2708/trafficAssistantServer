@@ -3,13 +3,13 @@ import json
 
 class Detection:
 
-    def __init__(self, clazz, confidence, bbox):
-        self.__confidence = confidence
-        self.__bbox = bbox
-        self.__clazz = clazz
+    def __init__(self, title, confidence, location):
+        self.title = title
+        self.confidence = confidence
+        self.location = location
 
     def get_json_string(self):
         return json.dumps(self.__dict__)
 
     def __repr__(self):
-        return f'{self.__clazz}, {self.__confidence}, {self.__bbox}'
+        return f'{self.title}, {self.confidence}, {self.location}'
