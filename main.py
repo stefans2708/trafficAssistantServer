@@ -1,5 +1,7 @@
+import base64
+
 from flask import Flask
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO
 
 import constants
 
@@ -17,6 +19,14 @@ def index():
 def handle_message(message):
     print(message)
     return f'OK, {message}'
+
+
+@socketio.event()
+def image(data):
+    with open("received_image.jpg", "wb") as fh:
+        fh.write(base64.b64decode(data))
+
+    print(data)
 
 
 if __name__ == '__main__':
