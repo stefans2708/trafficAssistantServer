@@ -50,7 +50,7 @@ def load_image_into_numpy_array(path):
 # TODO: read from settings
 max_detections = 3
 confidence_threshold = 40
-image_size = (1280, 960)
+image_size = (480, 640)
 
 
 def get_class_name(model_result, detection_index):
@@ -79,7 +79,9 @@ def get_detections(model_result):
 
 
 def as_json_format(detections):
-    return json.dumps([json.dumps(d.__dict__) for d in detections])
+    array_of_jsons = [json.dumps(d.__dict__) for d in detections]
+    ", ".join(array_of_jsons)
+    return "[" + ", ".join(array_of_jsons) + "]"
 
 
 def run_detection(model, image):
