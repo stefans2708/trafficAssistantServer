@@ -8,5 +8,4 @@ for index, file_name in enumerate(sorted_files):
     ext = '.jpg' if index % 2 == 0 else '.xml'
     name = index / 2 if index % 2 == 0 else (index - 1) / 2
     name = str(name).replace('.', '_')
-    # print(name)
     os.rename(file_path, f'{SOURCE_DIRECTORY}/{name}{ext}')

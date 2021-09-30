@@ -7,32 +7,31 @@ Usage:
   # Create test data:
   python generate_tfrecord.py --csv_input=data/test_labels.csv  --output_path=test.record
 """
+from __future__ import absolute_import
 from __future__ import division
 from __future__ import print_function
-from __future__ import absolute_import
 
-import os
 import io
+import os
+from collections import namedtuple
+
 import pandas as pd
 import tensorflow as tf
-
 from PIL import Image
 from object_detection.utils import dataset_util
-from collections import namedtuple, OrderedDict
 
-flags = tf.app.flags
-flags.DEFINE_string('csv_input', '', 'Path to the CSV input')
-flags.DEFINE_string('output_path', '', 'Path to output TFRecord')
-flags.DEFINE_string('image_dir', '', 'Path to images')
-FLAGS = flags.FLAGS
+IMAGES_DIRECTORY = '/home/stefan/Documents/ObjectDetection/TrafficAssistant/validation/'
+CSV_FILE_PATH = '/home/stefan/Documents/ObjectDetection/TrafficAssistant/validation_labels.csv'
+OUTPUT_PATH = '/home/stefan/Documents/ObjectDetection/TrafficAssistant/validation.record'
 
 
-# TO-DO replace this with label map
 def class_text_to_int(row_label):
-    if row_label == 'raccoon':
-        return 1
-    else:
-        None
+    return {
+        'car': 1,
+        'truck': 2,
+        'biker': 3,
+        'pedestrian': 4
+    }.get(row_label, None)
 
 
 def split(df, group):
@@ -42,7 +41,7 @@ def split(df, group):
 
 
 def create_tf_example(group, path):
-    with tf.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
+    with tf.io.gfile.GFile(os.path.join(path, '{}'.format(group.filename)), 'rb') as fid:
         encoded_jpg = fid.read()
     encoded_jpg_io = io.BytesIO(encoded_jpg)
     image = Image.open(encoded_jpg_io)
@@ -82,19 +81,18 @@ def create_tf_example(group, path):
     return tf_example
 
 
-def main(_):
-    writer = tf.python_io.TFRecordWriter(FLAGS.output_path)
-    path = os.path.join(FLAGS.image_dir)
-    examples = pd.read_csv(FLAGS.csv_input)
+def main():
+    writer = tf.io.TFRecordWriter(OUTPUT_PATH)
+    path = os.path.join(IMAGES_DIRECTORY)
+    examples = pd.read_csv(CSV_FILE_PATH)
     grouped = split(examples, 'filename')
     for group in grouped:
         tf_example = create_tf_example(group, path)
         writer.write(tf_example.SerializeToString())
 
     writer.close()
-    output_path = os.path.join(os.getcwd(), FLAGS.output_path)
-    print('Successfully created the TFRecords: {}'.format(output_path))
+    print('Successfully created the TFRecords: {}'.format(OUTPUT_PATH))
 
 
 if __name__ == '__main__':
-    tf.app.run()
+    main()
