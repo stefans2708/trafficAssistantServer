@@ -29,8 +29,9 @@ def class_text_to_int(row_label):
     return {
         'car': 1,
         'truck': 2,
-        'biker': 3,
-        'pedestrian': 4
+        'bus': 3,
+        'biker': 4,
+        'pedestrian': 5
     }.get(row_label, None)
 
 

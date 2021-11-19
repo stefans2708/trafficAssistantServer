@@ -4,23 +4,24 @@ import xml.etree.ElementTree as ET
 
 import pandas as pd
 
-IMAGES_DIRECTORY = '/home/stefan/Documents/ObjectDetection/TrafficAssistant/validation/'
-FILE_NAME = 'validation_labels.csv'
-DST_DIR = '/home/stefan/Documents/ObjectDetection/TrafficAssistant/'
+IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\full'
+FILE_NAME = 'full.csv'
+DST_DIR = 'C:\\Users\\stefa\\Desktop\\'
 
 xml_list = []
 for xml_file in glob.glob(IMAGES_DIRECTORY + '/*.xml'):
     tree = ET.parse(xml_file)
     root = tree.getroot()
     for member in root.findall('object'):
+        bbox = member.find('bndbox')
         value = (root.find('filename').text,
                  int(root.find('size')[0].text),
                  int(root.find('size')[1].text),
                  member[0].text,
-                 int(member[5][0].text),
-                 int(member[5][2].text),
-                 int(member[5][1].text),
-                 int(member[5][3].text)
+                 int(bbox.find('xmin').text),
+                 int(bbox.find('ymin').text),
+                 int(bbox.find('xmax').text),
+                 int(bbox.find('ymax').text)
                  )
         xml_list.append(value)
 

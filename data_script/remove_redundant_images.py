@@ -1,6 +1,6 @@
 import os
 
-SOURCE_DIRECTORY = '/home/stefan/Documents/ObjectDetection/dataset/roboflow_self_driving_small/export'
+SOURCE_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\test'
 
 continuousDuplicates = 4
 

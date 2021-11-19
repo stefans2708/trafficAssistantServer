@@ -1,6 +1,6 @@
 import os
 
-SOURCE_DIRECTORY = '/home/stefan/Documents/ObjectDetection/dataset/roboflow_self_driving_small/export'
+SOURCE_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\roboflow'
 
 sorted_files = sorted(os.listdir(SOURCE_DIRECTORY))
 for index, file_name in enumerate(sorted_files):
