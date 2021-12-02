@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 
 import pandas as pd
 
-IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\full'
-FILE_NAME = 'full.csv'
+IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\cars_annotated'
+FILE_NAME = 'cars_annotated.csv'
 DST_DIR = 'C:\\Users\\stefa\\Desktop\\'
 
 xml_list = []
@@ -18,6 +18,8 @@ for xml_file in glob.glob(IMAGES_DIRECTORY + '/*.xml'):
                  int(root.find('size')[0].text),
                  int(root.find('size')[1].text),
                  member[0].text,
+                 member.find('truncated').text,
+                 member.find('difficult').text,
                  int(bbox.find('xmin').text),
                  int(bbox.find('ymin').text),
                  int(bbox.find('xmax').text),
@@ -25,7 +27,7 @@ for xml_file in glob.glob(IMAGES_DIRECTORY + '/*.xml'):
                  )
         xml_list.append(value)
 
-column_name = ['filename', 'width', 'height', 'class', 'xmin', 'ymin', 'xmax', 'ymax']
+column_name = ['filename', 'width', 'height', 'class', 'truncated', 'difficult', 'xmin', 'ymin', 'xmax', 'ymax']
 xml_df = pd.DataFrame(xml_list, columns=column_name)
 xml_df.to_csv(os.path.join(DST_DIR, FILE_NAME), index=False)
 print('Successfully converted xml to csv.')

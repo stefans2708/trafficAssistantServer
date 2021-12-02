@@ -18,11 +18,11 @@ from collections import namedtuple
 import pandas as pd
 import tensorflow as tf
 from PIL import Image
-from object_detection.utils import dataset_util
+import dataset_util
 
-IMAGES_DIRECTORY = '/home/stefan/Documents/ObjectDetection/TrafficAssistant/validation/'
-CSV_FILE_PATH = '/home/stefan/Documents/ObjectDetection/TrafficAssistant/validation_labels.csv'
-OUTPUT_PATH = '/home/stefan/Documents/ObjectDetection/TrafficAssistant/validation.record'
+IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\cars_annotated'
+CSV_FILE_PATH = 'C:\\Users\\stefa\\Desktop\\cars_annotated.csv'
+OUTPUT_PATH = 'C:\\Users\\stefa\\Desktop\\cars_annotated.record'
 
 
 def class_text_to_int(row_label):
@@ -50,6 +50,8 @@ def create_tf_example(group, path):
 
     filename = group.filename.encode('utf8')
     image_format = b'jpg'
+    difficults = []
+    truncateds = []
     xmins = []
     xmaxs = []
     ymins = []
@@ -64,6 +66,8 @@ def create_tf_example(group, path):
         ymaxs.append(row['ymax'] / height)
         classes_text.append(row['class'].encode('utf8'))
         classes.append(class_text_to_int(row['class']))
+        difficults.append(int(row['difficult']))
+        truncateds.append(int(row['truncated']))
 
     tf_example = tf.train.Example(features=tf.train.Features(feature={
         'image/height': dataset_util.int64_feature(height),
@@ -78,6 +82,8 @@ def create_tf_example(group, path):
         'image/object/bbox/ymax': dataset_util.float_list_feature(ymaxs),
         'image/object/class/text': dataset_util.bytes_list_feature(classes_text),
         'image/object/class/label': dataset_util.int64_list_feature(classes),
+        'image/object/difficult': dataset_util.int64_list_feature(difficults),
+        'image/object/truncated': dataset_util.int64_list_feature(truncateds)
     }))
     return tf_example
 
