@@ -20,9 +20,9 @@ import tensorflow as tf
 from PIL import Image
 import dataset_util
 
-IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\cars_annotated'
-CSV_FILE_PATH = 'C:\\Users\\stefa\\Desktop\\cars_annotated.csv'
-OUTPUT_PATH = 'C:\\Users\\stefa\\Desktop\\cars_annotated.record'
+IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\training'
+CSV_FILE_PATH = 'C:\\Users\\stefa\\Desktop\\training.csv'
+OUTPUT_PATH = 'C:\\Users\\stefa\\Desktop\\training.record'
 
 
 def class_text_to_int(row_label):

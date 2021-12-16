@@ -1,8 +1,8 @@
 import os
 import shutil
 
-IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\split_test'
-DESTINATION_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\split_test_val'
+IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\dataset\\vlad_training'
+DESTINATION_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\dataset\\vlad_validation'
 VALIDATION_SPLIT = 0.3
 
 src = IMAGES_DIRECTORY

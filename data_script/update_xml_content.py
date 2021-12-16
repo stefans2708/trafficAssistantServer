@@ -1,7 +1,7 @@
 import os
 import xml.etree.ElementTree as ET
 
-SOURCE_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\cars_annotated'
+SOURCE_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\training'
 RELEVANT_CLASSES = ['car', 'truck', 'biker', 'pedestrian', 'bus']
 
 for file_name in os.listdir(SOURCE_DIRECTORY):
@@ -26,5 +26,9 @@ for file_name in os.listdir(SOURCE_DIRECTORY):
         #         x_max = box.find('xmax')
         #         box.remove(x_max)
         #         box.insert(1, x_max)
+
+        # objects = root.findall('object')
+        # if len(objects) == 0:
+        #     print(f'{file_name} is without annotations')
 
         tree.write(file_path)

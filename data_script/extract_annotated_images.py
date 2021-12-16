@@ -4,8 +4,8 @@ import shutil
 
 import cv2.cv2 as cv2
 
-IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\cars_resized'
-DESTINATION_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\cars_annotated'
+IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\training'
+DESTINATION_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\training'
 
 
 def _convert_to_jpg_and_move(img_path, _file_name):

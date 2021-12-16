@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 
 import pandas as pd
 
-IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\cars_annotated'
-FILE_NAME = 'cars_annotated.csv'
+IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\training'
+FILE_NAME = 'training.csv'
 DST_DIR = 'C:\\Users\\stefa\\Desktop\\'
 
 xml_list = []
