@@ -17,7 +17,6 @@ class ObjectDetector:
     @staticmethod
     def as_json_format(detections):
         array_of_jsons = [json.dumps(d.__dict__) for d in detections]
-        ", ".join(array_of_jsons)
         return "[" + ", ".join(array_of_jsons) + "]"
 
     @staticmethod
@@ -30,8 +29,7 @@ class ObjectDetector:
 
     @staticmethod
     def get_bounding_box(model_result, image_width, image_height, detection_index):
-        # y1 x1 y2 x2
-        box = model_result['detection_boxes'][0][detection_index].numpy()
+        box = model_result['detection_boxes'][0][detection_index].numpy()  # y1 x1 y2 x2
         return [box[1] * image_width, box[0] * image_height, box[3] * image_width, box[2] * image_height]
 
     def run_detection(self, image, confidence_threshold, max_detections):
