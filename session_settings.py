@@ -1,4 +1,4 @@
 class SessionSettings:
-    confidence_threshold = 30
+    confidence_threshold = 20
     max_detections = 10
-    image_size = (480, 640)
+    image_size = (512, 512)

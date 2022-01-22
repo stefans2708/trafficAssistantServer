@@ -5,11 +5,12 @@ import numpy as np
 from flask import Flask, request, session
 from flask_socketio import SocketIO
 
+import constants
 from constants import *
 from detector import ObjectDetector
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'this_is_secret_123'
+app.config['SECRET_KEY'] = constants.SECRET_KEY
 socketio = SocketIO(app)
 object_detector = ObjectDetector()
 
@@ -36,12 +37,6 @@ def connect():
 @socketio.event
 def disconnect():
     print(f'Client {request.sid} disconnected.')
-
-
-@socketio.on(EVENT_MESSAGE)
-def handle_message(message):
-    print(f'{request.sid}: {message}')
-    return f'OK, {message}'
 
 
 @socketio.event

@@ -18,7 +18,7 @@ from collections import namedtuple
 import pandas as pd
 import tensorflow as tf
 from PIL import Image
-import dataset_util
+from object_detection.utils import dataset_util
 
 IMAGES_DIRECTORY = 'C:\\Users\\stefa\\Desktop\\training'
 CSV_FILE_PATH = 'C:\\Users\\stefa\\Desktop\\training.csv'

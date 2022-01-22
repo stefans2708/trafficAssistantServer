@@ -1,3 +1,4 @@
+SECRET_KEY = 'this_is_secret_123'
 EVENT_MESSAGE = 'new_msg'
 
 SESSION_CONFIDENCE_THRESHOLD = 'confidence_threshold'
