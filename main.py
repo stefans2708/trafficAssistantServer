@@ -46,22 +46,19 @@ def disconnect():
 
 @socketio.event
 def image(data):
-    frame = utils.image_from_base64_encoded_bytes(data)
-    return object_detector.run_detection(image=frame,
+    return object_detector.run_detection(image=utils.image_from_base64_encoded_bytes(data),
                                          confidence_threshold=session[SESSION_DETECTION_THRESHOLD],
                                          max_detections=session[SESSION_MAX_DETECTIONS])
 
 
 @socketio.event
 def classify_cars(*data):
-    # image_bytes = base64.b64decode(data[1])
-    # with open(f"received_crop1.jpg", "wb") as fh:
-    #     fh.write(image_bytes)
-
+    json_results = []
     for img in data:
-        crop = utils.image_from_base64_encoded_bytes(img)
-        object_classifier.classify(image=crop,
-                                   classification_threshold=session[SESSION_CLASSIFICATION_THRESHOLD])
+        json_results.append(
+            object_classifier.classify(image=utils.image_from_base64_encoded_bytes(img),
+                                       classification_threshold=session[SESSION_CLASSIFICATION_THRESHOLD]))
+    return "[" + ", ".join(json_results) + "]"
 
 
 if __name__ == '__main__':

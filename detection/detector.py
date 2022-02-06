@@ -29,7 +29,7 @@ class ObjectDetector:
 
     def run_detection(self, image, confidence_threshold, max_detections):
         start_time = time.time()
-        model_result = self.model(image)
+        model_result = self.model(np.expand_dims(image, 0))  # model accepts only batches
         print('Elapsed time: ', time.time() - start_time)
 
         detections = []

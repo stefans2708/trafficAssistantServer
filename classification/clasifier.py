@@ -2,10 +2,13 @@ import time
 
 import numpy as np
 import tensorflow as tf
+from cv2 import cv2
 from scipy.io import loadmat
 
 import utils
 from classification.classification import Classification
+
+MODEL_INPUT_SIZE = 192
 
 
 class Classifier:
@@ -24,6 +27,8 @@ class Classifier:
 
     def classify(self, image, classification_threshold):
         start_time = time.time()
+        image = cv2.resize(image, (MODEL_INPUT_SIZE, MODEL_INPUT_SIZE))
+        image = np.expand_dims(image, 0)  # model accepts only batches
         predictions = self.model.predict(image)
         print('Elapsed time: ', time.time() - start_time)
 
