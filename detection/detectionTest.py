@@ -14,7 +14,7 @@ matplotlib.use('TkAgg')
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"  # see issue #152
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-MODEL_PATH = 'D:\\Development\\ObjectDetection\\training\\model\\saved_model'
+MODEL_PATH = 'D:\\Development\\ObjectDetection\\training\\model\\model'
 IMAGES_DIR = 'C:\\Users\\stefa\\Desktop\\test'
 category_index = {
     1: {'id': 1, 'name': 'car'},

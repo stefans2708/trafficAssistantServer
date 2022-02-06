@@ -1,9 +1,9 @@
-import json
 import time
 
 import numpy as np
 import tensorflow as tf
 
+import utils
 from detection import Detection
 
 class_names = ['car', 'truck', 'bus', 'biker', 'pedestrian']
@@ -12,12 +12,7 @@ class_names = ['car', 'truck', 'bus', 'biker', 'pedestrian']
 class ObjectDetector:
 
     def __init__(self):
-        self.model = tf.saved_model.load('saved_model')
-
-    @staticmethod
-    def as_json_format(detections):
-        array_of_jsons = [json.dumps(d.__dict__) for d in detections]
-        return "[" + ", ".join(array_of_jsons) + "]"
+        self.model = tf.saved_model.load('../model/detection')
 
     @staticmethod
     def get_class_name(model_result, detection_index):
@@ -50,4 +45,4 @@ class ObjectDetector:
                           confidence=confidence,
                           location=self.get_bounding_box(model_result, width, height, i)))
 
-        return self.as_json_format(detections)
+        return utils.array_to_json(detections)
