@@ -10,7 +10,7 @@ def array_to_json(items):
     return "[" + ", ".join(array_of_jsons) + "]"
 
 
-def image_from_base64_encoded_bytes(image_bytes):
-    image_bytes = base64.b64decode(image_bytes)
+def image_from_base64_encoded_bytes(data):
+    image_bytes = base64.b64decode(data)
     np_data = np.frombuffer(image_bytes, dtype=np.uint8)
     return cv2.imdecode(np_data, cv2.IMREAD_COLOR)

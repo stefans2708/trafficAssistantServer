@@ -4,7 +4,7 @@ import numpy as np
 import tensorflow as tf
 
 import utils
-from detection import Detection
+from detection.detection import Detection
 
 class_names = ['car', 'truck', 'bus', 'biker', 'pedestrian']
 
@@ -12,7 +12,7 @@ class_names = ['car', 'truck', 'bus', 'biker', 'pedestrian']
 class ObjectDetector:
 
     def __init__(self):
-        self.model = tf.saved_model.load('../model/detection')
+        self.model = tf.saved_model.load('model/detection')
 
     @staticmethod
     def get_class_name(model_result, detection_index):
@@ -34,7 +34,7 @@ class ObjectDetector:
 
         detections = []
         count = min(max_detections, int(model_result['num_detections'][0].numpy()))
-        _, height, width, _ = image.shape
+        height, width, _ = image.shape
         for i in range(count):
             confidence = self.get_confidence(model_result, i)
             if confidence < confidence_threshold:

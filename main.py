@@ -53,12 +53,16 @@ def image(data):
 
 @socketio.event
 def classify_cars(*data):
-    json_results = []
+    classification_results_json = []
     for img in data:
-        json_results.append(
+        classification_results_json.append(
             object_classifier.classify(image=utils.image_from_base64_encoded_bytes(img),
-                                       classification_threshold=session[SESSION_CLASSIFICATION_THRESHOLD]))
-    return "[" + ", ".join(json_results) + "]"
+                                       classification_threshold=session[SESSION_CLASSIFICATION_THRESHOLD]
+                                       ).serialize_to_json()
+        )
+    result = "[" + ", ".join(classification_results_json) + "]"
+    print(result)
+    return result
 
 
 if __name__ == '__main__':
