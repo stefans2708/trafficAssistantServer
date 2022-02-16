@@ -1,27 +1,18 @@
 import os
-import sys
 
-import cv2
 import tensorflow as tf
-import tensorflow_datasets as tfds
 from tensorflow.keras.preprocessing import image_dataset_from_directory
 
-# config = tf.compat.v1.ConfigProto()
-# config.gpu_options.allow_growth = True
-# sess = tf.compat.v1.Session(config=config)
-
-IMG_PATH = 'C:\\Users\\stefa\\Desktop\\cars196\\result'
+IMG_PATH = 'C:\\Users\\stefa\\Desktop\\cars196\\dataset'
 IMAGE_SIZE = (192, 192)
 INPUT_SHAPE = IMAGE_SIZE + (3,)
-BATCH_SIZE = 32
 AUTO_TUNE = tf.data.experimental.AUTOTUNE
 LEARNING_RATE = 0.0001
 
-train_dataset = image_dataset_from_directory(directory=IMG_PATH, image_size=IMAGE_SIZE, batch_size=BATCH_SIZE,
-                                             validation_split=0.5, seed=123, subset='training')
 
-validation_dataset = image_dataset_from_directory(directory=IMG_PATH, image_size=IMAGE_SIZE, batch_size=BATCH_SIZE,
-                                                  validation_split=0.5, seed=123, subset='validation')
+def load_labels():
+    dataset_path = os.path.join(IMG_PATH)
+    return os.listdir(dataset_path)
 
 
 def configure_for_performance(ds):
@@ -30,6 +21,14 @@ def configure_for_performance(ds):
     ds = ds.prefetch(buffer_size=AUTO_TUNE)
     return ds
 
+
+labels = load_labels()
+
+train_dataset = image_dataset_from_directory(directory=IMG_PATH, image_size=IMAGE_SIZE, class_names=labels,
+                                             validation_split=0.5, seed=123, subset='training')
+
+validation_dataset = image_dataset_from_directory(directory=IMG_PATH, image_size=IMAGE_SIZE, class_names=labels,
+                                                  validation_split=0.5, seed=123, subset='validation')
 
 train_dataset = configure_for_performance(train_dataset)
 validation_dataset = configure_for_performance(validation_dataset)
@@ -64,13 +63,13 @@ model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=LEARNING_RATE),
               metrics=['accuracy'])
 
 feature_extraction_history = model.fit(x=train_dataset,
-                                       epochs=40,
+                                       epochs=48,
                                        validation_data=validation_dataset,
                                        verbose=2)
 
 # Fine tuning
 num_of_fine_tuning_layers = 62
-num_of_epochs = 30
+num_of_epochs = 37
 total_epochs = len(feature_extraction_history.epoch) + num_of_epochs
 
 base_model.trainable = True
@@ -88,4 +87,4 @@ fine_tuning_history = model.fit(x=train_dataset,
 
 # model.save('model') bug in tf 2.7
 
-model.save('classification_model.h5')
+model.save('classification_model_4.h5')
