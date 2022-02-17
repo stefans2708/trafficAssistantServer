@@ -1,18 +1,17 @@
-import base64
-
-import cv2
-import numpy as np
 from flask import Flask, request, session
 from flask_socketio import SocketIO
 
 import constants
+import utils
+from classification.clasifier import Classifier
 from constants import *
-from detector import ObjectDetector
+from detection.detector import ObjectDetector
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = constants.SECRET_KEY
 socketio = SocketIO(app)
 object_detector = ObjectDetector()
+object_classifier = Classifier()
 
 
 @app.route('/')
@@ -22,16 +21,22 @@ def index():
 
 @socketio.event
 def connect():
-    confidence_threshold = int(request.args.get('confidenceThreshold'))
-    session[SESSION_CONFIDENCE_THRESHOLD] = \
-        DEFAULT_CONFIDENCE_THRESHOLD if confidence_threshold is None else confidence_threshold
+    detection_threshold = int(request.args.get('detectionThreshold'))
+    session[SESSION_DETECTION_THRESHOLD] = \
+        DEFAULT_CONFIDENCE_THRESHOLD if detection_threshold is None else detection_threshold
+
+    classification_threshold = int(request.args.get('classificationThreshold'))
+    session[SESSION_CLASSIFICATION_THRESHOLD] = \
+        DEFAULT_CONFIDENCE_THRESHOLD if classification_threshold is None else classification_threshold
 
     max_detections = int(request.args.get('maxDetections'))
     session[SESSION_MAX_DETECTIONS] = \
         DEFAULT_MAX_DETECTIONS if max_detections is None else max_detections
 
     print(f'New client ({request.sid}). '
-          f'Settings: confidence threshold: {confidence_threshold}, max detections: {max_detections}')
+          f'Settings: detection threshold: {detection_threshold}, '
+          f'classification threshold: {classification_threshold}, '
+          f'max detections: {max_detections}')
 
 
 @socketio.event
@@ -41,13 +46,23 @@ def disconnect():
 
 @socketio.event
 def image(data):
-    image_bytes = base64.b64decode(data)
-    np_data = np.frombuffer(image_bytes, dtype=np.uint8)
-    frame = cv2.imdecode(np_data, cv2.IMREAD_COLOR)
-    frame = np.expand_dims(frame, 0)
-    return object_detector.run_detection(image=frame,
-                                         confidence_threshold=session[SESSION_CONFIDENCE_THRESHOLD],
+    return object_detector.run_detection(image=utils.image_from_base64_encoded_bytes(data),
+                                         confidence_threshold=session[SESSION_DETECTION_THRESHOLD],
                                          max_detections=session[SESSION_MAX_DETECTIONS])
+
+
+@socketio.event
+def classify_cars(*data):
+    classification_results_json = []
+    for img in data:
+        classification_results_json.append(
+            object_classifier.classify(image=utils.image_from_base64_encoded_bytes(img),
+                                       classification_threshold=session[SESSION_CLASSIFICATION_THRESHOLD]
+                                       ).serialize_to_json()
+        )
+    result = "[" + ", ".join(classification_results_json) + "]"
+    print(result)
+    return result
 
 
 if __name__ == '__main__':

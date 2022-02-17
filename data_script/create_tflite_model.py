@@ -4,7 +4,7 @@ import tensorflow as tf
 from tflite_support.metadata_writers import object_detector
 from tflite_support.metadata_writers import writer_utils
 
-MODEL_DIR_PATH = 'D:\\Development\\ObjectDetection\\training\\tflite\\saved_model'
+MODEL_DIR_PATH = 'D:\\Development\\ObjectDetection\\training\\tflite\\model'
 DESTINATION = 'D:\\Development\\ObjectDetection\\training\\tflite\\'
 MODEL_QUANITIZED_WEIGHTS_FILE = 'quanitized.tflite'
 MODEL_QUANITIZED_FILE = 'fully_quanitized_model.tflite'
