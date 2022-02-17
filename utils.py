@@ -2,7 +2,7 @@ import base64
 import json
 
 import numpy as np
-from tensorflow_datasets.object_detection.open_images_challenge2019_beam import cv2
+import cv2.cv2 as cv2
 
 
 def array_to_json(items):
